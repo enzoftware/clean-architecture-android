@@ -1,1 +1,1 @@
-# Android Clean Architecture Example
+# Android Clean Architecture
