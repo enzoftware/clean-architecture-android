@@ -2,7 +2,7 @@ package com.projects.enzoftware.fakegeolocation.ui
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.projects.enzoftware.fakegeolocation.R
@@ -20,6 +20,10 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
+    }
+
+    init {
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

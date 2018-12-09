@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FakeGeoLocation</string>
     <string name="action_settings">Settings</string>
+    <string name="request_new_location">Request new location</string>
 </resources>

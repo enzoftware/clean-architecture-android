@@ -1,6 +1,5 @@
 package com.projects.enzoftware.fakegeolocation.ui.adapters
 
-import android.support.v7.app.AlertController
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
