@@ -16,7 +16,7 @@ private fun Date.toPrettifiedString(): String
         = SimpleDateFormat.getDateTimeInstance().run { format(this@toPrettifiedString) }
 
 private fun Double.toPrittifiedString(): String {
-    val df = DecimalFormat("#:###")
+    val df = DecimalFormat("#.###")
     df.roundingMode = RoundingMode.CEILING
     return df.format(this)
 }

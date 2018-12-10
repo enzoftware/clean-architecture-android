@@ -1,44 +1,49 @@
 package com.projects.enzoftware.fakegeolocation.ui
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
+import com.projects.enzoftware.data.LocationRepository
 import com.projects.enzoftware.fakegeolocation.R
-
+import com.projects.enzoftware.fakegeolocation.framework.FakeLocationSource
+import com.projects.enzoftware.fakegeolocation.framework.MemoryLocationPersistenceSource
+import com.projects.enzoftware.fakegeolocation.ui.adapters.LocationsAdapter
+import com.projects.enzoftware.fakegeolocation.ui.model.Location
+import com.projects.enzoftware.fakegeolocation.ui.presenter.MainPresenter
+import com.projects.enzoftware.usecases.GetLocations
+import com.projects.enzoftware.usecases.RequestNewLocation
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainPresenter.View {
+
+    private val locationsAdapter = LocationsAdapter()
+    private val presenter: MainPresenter
+
+    init {
+        val persistence = MemoryLocationPersistenceSource()
+        val deviceLocation = FakeLocationSource()
+        val locationsRepository = LocationRepository(persistence, deviceLocation)
+        presenter = MainPresenter(
+                this,
+                GetLocations(locationsRepository),
+                RequestNewLocation(locationsRepository)
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-    }
-
-    init {
+        recycler.adapter = locationsAdapter
+        newLocationBtn.setOnClickListener { presenter.newLocationClicked() }
+        presenter.onCreate()
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
+    override fun renderLocations(locations: List<Location>) {
+        locationsAdapter.items = locations
     }
 }
